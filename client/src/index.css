@@ -1,0 +1,23 @@
+nav a {
+    padding: 10px;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    font-size: 20px;
+    border: 1px solid black;
+    margin: 10px;
+}
+
+nav {
+    margin-bottom: 20px;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+table,
+td,
+th {
+    border: 1px solid;
+}
