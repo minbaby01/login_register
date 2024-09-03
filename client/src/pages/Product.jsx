@@ -1,27 +1,32 @@
 import React, { useEffect, useState } from "react";
-import axios from 'axios';
 import { toast } from 'react-hot-toast';
+import { getAllProductsAPI, getProductAPI, createProductAPI, updateProductAPI, deleteProductAPI } from "../util/api.js";
 
 export default function Product() {
     const [productsTable, setProductTable] = useState([]);
     const [data, setData] = useState({
+        id: null,
         name: "",
         price: "",
         quantity: "",
-        description: "",
-        id: null
+        description: ""
     });
     const [isEditing, setIsEditing] = useState(false);
 
-    useEffect(() => {
-        const getAllProducts = async () => {
-            try {
-                const responseAllProducts = await axios.get('/api/products');
-                setProductTable(responseAllProducts.data);
-            } catch (error) {
-                console.log(error);
+    const getAllProducts = async () => {
+        try {
+            const response = await getAllProductsAPI();
+            if (response.status != 200) {
+                toast.error(response.data.message)
+            } else {
+                setProductTable(response.data);
             }
+        } catch (error) {
+            console.log(error);
         }
+    }
+
+    useEffect(() => {
         getAllProducts();
     }, []);
 
@@ -32,18 +37,17 @@ export default function Product() {
 
         try {
             if (id) {
-                await axios.put(`/api/products/${id}`, { name, price, quantity, description });
+                await updateProductAPI(id, name, price, quantity, description);
                 toast.success("Product updated successfully");
             } else {
-                await axios.post('/api/products', { name, price, quantity, description });
+                await createProductAPI(name, price, quantity, description);
                 toast.success("Product created successfully");
             }
 
-            setData({ name: "", price: "", quantity: "", description: "", id: null });
+            setData({id: null,  name: "", price: "", quantity: "", description: ""});
             setIsEditing(false);
 
-            const responseAllProducts = await axios.get('/api/products');
-            setProductTable(responseAllProducts.data);
+            getAllProducts();
 
         } catch (error) {
             console.log(error);
@@ -53,7 +57,7 @@ export default function Product() {
 
     const editProduct = async (id) => {
         try {
-            const { data: product } = await axios.get(`/api/products/${id}`);
+            const { data: product } = await getProductAPI(id);
             setData({ ...product, id });
             setIsEditing(true);
         } catch (error) {
@@ -63,7 +67,7 @@ export default function Product() {
 
     const deleteProduct = async (id) => {
         try {
-            await axios.delete(`/api/products/${id}`);
+            await deleteProductAPI(id);
             toast.success("Product deleted successfully");
             setProductTable(productsTable.filter(product => product._id !== id));
         } catch (error) {
@@ -126,7 +130,7 @@ export default function Product() {
                         setData({ name: "", price: "", quantity: "", description: "", id: null });
                         setIsEditing(false);
                     }
-                }>Cancel</button>}
+                    }>Cancel</button>}
             </form>
 
             <div>

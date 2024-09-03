@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+require("dotenv").config();
 
 const registerUser = async (name, email, password) => {
     if (!name) {
@@ -34,14 +35,15 @@ const loginUser = async (email, password) => {
         if (user) {
             const match = await passwordCompare(password, user.password);
             if (!match) {
-                return "Email or password is incorrect";
+                return { message: "Email or password is incorrect", statusCode: 400 };
             }
             else {
                 const access_token = jwt.sign({
                     user: user._id, name: user.name, email: user.email
                 },
                     process.env.JWT_SECRET,
-                    { expiresIn: '1h' });
+                    { expiresIn: '1h' 
+                });
 
                 return {
                     access_token,
@@ -53,7 +55,7 @@ const loginUser = async (email, password) => {
             }
         }
         else {
-            return "Email or password is incorrect";
+            return { message: "Email or password is incorrect", statusCode: 400 };
         }
 
     } catch (error) {

@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const cors = require('cors');
 
-const { createProduct, getAllProducts, getProduct, updateProduct, deleteProduct } = require('../controllers/productController.js')
+const { createProduct, getAllProducts, getProduct, updateProduct, deleteProduct } = require('../controllers/productController.js');
+const auth = require('../middleware/auth.js');
 
 router.use(
     cors({
@@ -10,9 +11,10 @@ router.use(
         credentials: true
     })
 )
+router.all("*", auth);
 
-router.get('/api/product1', (req, res) => {
-    res.json('product1');
+router.get('/api/product', (req, res) => {
+    res.status(200).json("OK");
 })
 router.post('/api/products', createProduct)
 router.get('/api/products', getAllProducts)

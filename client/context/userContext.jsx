@@ -1,20 +1,26 @@
-// import axios from "axios";
-// import { createContext, useEffect, useState } from "react";
+import axios from "../src/util/axios.custom";
+import { createContext, useEffect, useState } from "react";
 
-// export const UserContext = createContext({});
+export const UserContext = createContext({
+    isAuthenticated: false,
+    user: {
+        email: "",
+        name: ""
+    }
+});
 
-// export function UserContextProvider({ children }) {
-//     const [user, setUser] = useState(null);
-//     useEffect(() => {
-//         if(!user) {
-//             axios.get('/profile').then(({data}) => {
-//                 setUser(data);
-//             })
-//         }
-//     }, [])
-//     return (
-//         <UserContext.Provider value = {{user, setUser}}>
-//             {children}
-//         </UserContext.Provider>
-//     )
-// }
+export const AppWrapper = (props) => {
+    const [auth, setAuth] = useState({
+        isAuthenticated: false,
+        user: {
+            email: "",
+            name: ""
+        }
+    });
+
+    return (
+        <AuthContext.Provider value = {auth, setAuth}>
+            {props.children}
+        </AuthContext.Provider>
+    );
+}

@@ -2,16 +2,15 @@ const jwt = require('jsonwebtoken');
 
 const authService = require('../services/authService');
 
-
 const authCheck = (req, res) => {
-    res.json("OK");
+    res.status(200).json("HELLO");
 }
 
 const registerUser = async (req, res) => {
     try {
         const { name, email, password } = req.body;
-        
-        const user = await authService.registerUser( name, email, password );
+
+        const user = await authService.registerUser(name, email, password);
         return res.status(200).json(user);
     } catch (error) {
         console.log(error);
@@ -21,17 +20,18 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
-        const data = await authService.loginUser(email, password);
-        return res.status(200).json(data);
+        const user = await authService.loginUser(email, password);
+        if (user.statusCode && user.statusCode != 200) {
+            return res.status(user.statusCode).json(user.message);
+        }
+        return res.status(200).json(user);
     } catch (error) {
         console.log(error);
     }
 }
 
-const getProfile = (req, res) => {
-    const { token } = req.cookies;
-
-    return authService.getProfile(token);
+const getAccount = (req, res) => {
+    return res.status(200).json(req.user);
 }
 
 const logOut = (req, res) => {
@@ -49,10 +49,10 @@ const generateRefreshToken = (user) => {
 const changePassword = async (req, res) => {
     try {
         const { _id, oldPassword, newPassword } = req.body;
-        return await authService.changePassword( _id, oldPassword, newPassword );
+        return await authService.changePassword(_id, oldPassword, newPassword);
     } catch (error) {
         console.log(error);
     }
 }
 
-module.exports = { authCheck, registerUser, loginUser, getProfile, logOut, changePassword };
+module.exports = { authCheck, registerUser, loginUser, getAccount, logOut, changePassword };

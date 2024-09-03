@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const cors = require('cors');
 
-const { createUser, getAllUsers, getUser, updateUser, deleteUser } = require('../controllers/userController.js')
+const { createUser, getAllUsers, getUser, updateUser, deleteUser } = require('../controllers/userController.js');
 
 router.use(
     cors({
@@ -11,8 +11,8 @@ router.use(
     })
 )
 
-router.get('/api/product1', (req, res) => {
-    res.json('product1');
+router.get('/api/user', (req, res) => {
+    res.status(200).json("OK");
 })
 router.post('/api/users', createUser)
 router.get('/api/users', getAllUsers)

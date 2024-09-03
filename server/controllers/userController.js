@@ -2,8 +2,12 @@ const userService = require('../services/userService');
 
 const createUser = async (req, res) => {
     try {
-        const { name, email, password } = req.body;
-        const user = await userService.createUser( name, email, password );
+        const { name, email, password, role } = req.body;
+
+        const user = await userService.createUser(name, email, password, role);
+        if (user.message) {
+            return res.status(user.statusCode).json(user.message);
+        }
         return res.status(200).json(user);
     } catch (error) {
         console.log(error);
@@ -30,13 +34,14 @@ const getUser = async (req, res) => {
 }
 
 const updateUser = async (req, res) => {
-    try {   
+    try {
         const { id } = req.params;
-        const { name, email, password } = req.body;
-        if ( !id || !name || !email ) {
-            return res.status(400).json({ message: 'All fields are required' });
+        const { name, email, password, role } = req.body;
+
+        const user = await userService.updateUser(id, name, email, password, role);
+        if (user.message) {
+            return res.status(user.statusCode).json(user.message);
         }
-        const user = await userService.updateUser( id, name, email, password );
         return res.status(200).json(user);
     } catch (error) {
         console.log(error);

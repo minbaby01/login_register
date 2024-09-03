@@ -1,9 +1,8 @@
 import { useState } from "react";
-import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
 import { loginAPI } from "../util/api";
-
+import Cookies from "js-cookie";
 function Login() {
 
     const navigate = useNavigate();
@@ -11,25 +10,28 @@ function Login() {
         email: "",
         password: ""
     })
+
+
     const login = async (e) => {
         e.preventDefault();
 
         const { email, password } = data;
-
         try {
-            const { data } = await loginAPI(email, password);
-            if (data.error) {
-                toast.error(data.error);
+            const response = await loginAPI(email, password);
+            if (response.status != 200) {
+                toast.error(response.data)
             } else {
-                localStorage.setItem("access_token", data.access_token);
+                Cookies.set('access_token', data.access_token, {
+                    path: '/',
+                    expires: new Date(Date.now() + 60 * 60 * 1000),
+                });
                 toast.success("Login successfully");
                 navigate('/');
             }
-
         } catch (error) {
             console.log(error);
         }
-        
+
     }
 
     return (

@@ -1,14 +1,16 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useCookies } from 'react-cookie';
 
 const Logout = () => {
+  const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
+
   const navigate = useNavigate();
 
   useEffect(() => {
     const logOut = async () => {
       try {
-        await axios.delete('/logout', { withCredentials: true });
+        removeCookie('access_token');
         navigate('/login');
       } catch (error) {
         console.error('Logout failed', error);

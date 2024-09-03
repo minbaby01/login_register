@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from 'axios';
+import axios from "../util/axios.custom";
 import { toast } from 'react-hot-toast';
 
 function Home() {
@@ -8,22 +8,22 @@ function Home() {
         email: '',
     });
 
-    useEffect(() => {
-        const getProfile = async () => {
-            try {
-                const response = await axios.get('/profile');
-                setData(response.data);
+    // useEffect(() => {
+    //     const getProfile = async () => {
+    //         try {
+    //             const response = await axios.get('/profile');
+    //             setData(response.data);
 
-                if (response.data.error) {
-                    toast.error(response.data.error);
-                }
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
+    //             if (response.data.error) {
+    //                 toast.error(response.data.error);
+    //             }
+    //         } catch (error) {
+    //             console.error('Error fetching data:', error);
+    //         }
+    //     };
 
-        getProfile();
-    }, []);
+    //     getProfile();
+    // }, []);
 
     return (
         <div>
