@@ -9,6 +9,8 @@ import LogOut from '../src/component/Logout';
 import ChangePassword from '../src/pages/ChangePassword';
 import Product from '../src/pages/Product';
 import User from '../src/pages/User';
+import SearchProduct from '../src/pages/SearchProduct';
+
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
         <Route path="/changepassword" element={<ChangePassword />} />
         <Route path='/product' element={<Product />}></Route>
         <Route path='/user' element={<User />}></Route>
+        <Route path='/searchProduct' element={<SearchProduct />}></Route>
+
       </Routes>
       {/* </UserContextProvider> */}
     </>

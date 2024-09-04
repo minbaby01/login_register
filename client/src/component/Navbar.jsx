@@ -9,6 +9,7 @@ function Navbar() {
             <Link to="/changepassword">Change Password</Link>
             <Link to="/product">Product</Link>
             <Link to="/user">User</Link>
+            <Link to="/searchProduct">Search Product</Link>
         </nav>
     );
 }

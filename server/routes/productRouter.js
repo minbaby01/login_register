@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const cors = require('cors');
 
-const { createProduct, getAllProducts, getProduct, updateProduct, deleteProduct } = require('../controllers/productController.js');
+const { createProduct, getAllProducts, getProduct, updateProduct, deleteProduct, searchProduct } = require('../controllers/productController.js');
 const auth = require('../middleware/auth.js');
 
 router.use(
@@ -21,5 +21,6 @@ router.get('/api/products', getAllProducts)
 router.get('/api/products/:id', getProduct)
 router.put('/api/products/:id', updateProduct)
 router.delete('/api/products/:id', deleteProduct)
+router.get('/api/search/products', searchProduct);
 
 module.exports = router

@@ -21,7 +21,7 @@ function Login() {
             if (response.status != 200) {
                 toast.error(response.data)
             } else {
-                Cookies.set('access_token', data.access_token, {
+                Cookies.set('access_token', response.data.access_token, {
                     path: '/',
                     expires: new Date(Date.now() + 60 * 60 * 1000),
                 });

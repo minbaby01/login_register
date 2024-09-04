@@ -3,7 +3,7 @@ const productService = require('../services/productService');
 const createProduct = async (req, res) => {
     try {
         const { name, price, quantity, description } = req.body;
-        const product = await productService.createProduct( name, price, quantity, description );
+        const product = await productService.createProduct(name, price, quantity, description);
         return res.status(200).json(product);
     } catch (error) {
         console.log(error);
@@ -30,15 +30,15 @@ const getProduct = async (req, res) => {
 }
 
 const updateProduct = async (req, res) => {
-    try {   
+    try {
         const { id } = req.params;
         const { name, price, quantity, description } = req.body;
 
-        if ( !id || !name || !price || !quantity || !description ) {
+        if (!id || !name || !price || !quantity || !description) {
             return res.status(400).json({ message: 'All fields are required' });
         }
-        
-        const product = await productService.updateProduct( id, name, price, quantity, description );
+
+        const product = await productService.updateProduct(id, name, price, quantity, description);
         return res.status(200).json(product);
     } catch (error) {
         console.log(error);
@@ -55,4 +55,14 @@ const deleteProduct = async (req, res) => {
     }
 }
 
-module.exports = { createProduct, getAllProducts, getProduct, updateProduct, deleteProduct }
+const searchProduct = async (req, res) => {
+    try {
+        const { name, category, minPrice, maxPrice } = req.query;
+        const product = await productService.searchProduct(name, category, minPrice, maxPrice);
+        return res.status(200).json(product);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+module.exports = { createProduct, getAllProducts, getProduct, updateProduct, deleteProduct, searchProduct }

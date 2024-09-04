@@ -97,6 +97,11 @@ const deleteProductAPI = async (id) => {
     return await axios.delete(API_URL);
 }
 
+const searchProductAPI = async (name, category, minPrice, maxPrice) => {
+    const API_URL = `/api/search/products?name=${name}&category=${category}&minPrice=${minPrice}&maxPrice=${maxPrice}`;
+    return await axios.get(API_URL);
+}
+
 export {
     loginAPI,
     registerAPI,
@@ -110,4 +115,5 @@ export {
     createProductAPI,
     updateProductAPI,
     deleteProductAPI,
+    searchProductAPI
 }

@@ -20,4 +20,25 @@ const deleteProduct = async (id) => {
     return await Product.findByIdAndDelete(id);
 }
 
-module.exports = { createProduct, getAllProducts, getProduct, updateProduct, deleteProduct }
+const searchProduct = async (name, category, minPrice, maxPrice) => {
+    let query = {};
+
+    if (name) {
+        query.name = { $regex: name, $options: 'i' };
+    }
+    
+    if (category) {
+        query.category = category;
+    }
+
+    if (minPrice) {
+        query.price = { ...query.price, $gte: minPrice };
+    }
+
+    if (maxPrice) {
+        query.price = { ...query.price, $lte: maxPrice }; 
+    }
+    return await Product.find(query);
+}
+
+module.exports = { createProduct, getAllProducts, getProduct, updateProduct, deleteProduct, searchProduct }
